@@ -2,6 +2,7 @@
 #include "imgui/backends/imgui_impl_opengl3.h"
 #include "imgui/imgui.h"
 #include "model.hpp"
+#include <chrono>
 
 #define GL_SILENCE_DEPRECATION
 #if defined(IMGUI_IMPL_OPENGL_ES2)
@@ -73,11 +74,12 @@ int main() {
 		ImGui::Text("Set the parameters of the simulation here");
 		ImGui::SliderInt("Number of rows", &(modelConf.n_rows), 1, 100);
 		ImGui::SliderInt("Number of columns", &(modelConf.n_cols), 1, 100);
-		ImGui::SliderFloat("Probability of link creation", &(modelConf.p_link_creation), -5.0f, 0.0f, "10^%.2f");
 		ImGui::SliderFloat("Probability of interaction", &(modelConf.p_interaction), 0.0f, 1.0f);
-		ImGui::SliderFloat("Interaction difference cap", &(modelConf.interaction_max), 0.0f, 1.0f);
-		ImGui::SliderFloat("Convergence parameter", &(modelConf.convergence_parameter), 0.0f, 1.0f);
-		ImGui::SliderInt("Size", &n_pixels, 1, 30);
+		ImGui::SliderFloat("Interaction threshold", &(modelConf.interaction_max), 0.0f, 1.0f);
+		ImGui::SliderFloat("Convergence parameter", &(modelConf.convergence_parameter), 0.0f, 0.5f);
+		ImGui::EndDisabled();
+		ImGui::SliderInt("Zoom", &n_pixels, 1, 30);
+		ImGui::BeginDisabled(simulating);
 
 		if (ImGui::Button("Generate opinions")) {
 			generated = true;
@@ -110,7 +112,6 @@ int main() {
 		if (simulating) {
 			model.interact();
 			model.updateImage(modelTexture);
-			//usleep(1000000);
 		}
 		ImGui::End();
 

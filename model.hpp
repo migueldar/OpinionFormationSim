@@ -10,15 +10,12 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <unistd.h>
 
 using namespace std;
 
-// probability of creating long distance links is calculated using pow(10, p_link_creation)
 typedef struct s_model_config {
 	int n_rows = 10, n_cols = 10;
-	float p_interaction = 0.1, p_link_creation = -3.0; 
-    float interaction_max = 0.3, convergence_parameter = 0.1;
+	float p_interaction = 0.1, interaction_max = 0.3, convergence_parameter = 0.1;
 } ModelConfig;
 
 class Model {

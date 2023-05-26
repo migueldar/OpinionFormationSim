@@ -38,7 +38,7 @@ void Model::generateConnections() {
 				if (i2 == i1)
 					startj2 = j1 + 1;
 				for (int j2 = startj2; j2 < conf.n_cols; j2++)
-					if (dis(gen) < pow(10, conf.p_link_creation))
+					if (dis(gen) <= pow(abs(i1 - i2) + abs(j1 - j2), -2))
 						connections.insert({{i1, j1}, {i2, j2}});
 			}
 		}
@@ -64,16 +64,6 @@ void Model::interact() {
 	uniform_real_distribution<double> dis(0.0, 1.0);
 	vector<pair<pair<int, int>, pair<int, int>>> interactions;
 
-	for (int i = 0; i < conf.n_rows; i++) {
-		for (int j = 0; j < conf.n_cols; j++) {
-			if (i != conf.n_rows - 1)
-				if (dis(gen) < conf.p_interaction)
-					interactions.push_back({{i, j}, {i + 1, j}});
-			if (j != conf.n_cols - 1)
-				if (dis(gen) < conf.p_interaction)
-					interactions.push_back({{i, j}, {i, j + 1}});
-		}
-	}
 	for (set<pair<pair<int, int>, pair<int, int>>>::iterator it = connections.begin(); it != connections.end(); it++)
 		if (dis(gen) < conf.p_interaction)
 			interactions.push_back(*it);
